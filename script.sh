@@ -32,15 +32,24 @@ if [ -n "$1" ]; then
 				touch $2.py
 				chmod 744 $2.py
 				echo "#!/bin/python3" >> $2.py
-					if [ -n $3 ]; then
-				       		echo "import $3" >> $2.py
-			        	fi
-					read -p "Ouvrir le fichier avec vim ? Y/N   " rep
-					if [ $rep == "y" ] || [ $rep == "Y" ]; then
-						vim $2.py
-					else
-		 				ls -a
-					fi	
+					while [ "$lib" != "Y" ] || [ "$lib" != "y" ]; do
+						read -p "Ajouter une librairie ? Y/N   " lib
+							echo -e " ${RED} Pour quitter taper \"quit\" ${NC} "
+							while [ $lib == "Y" ] || [ $lib == "y" ]; do
+								read -p " Nom de la librairie ? " name
+								if [ $name == "quit" ]; then 
+									read -p "Ouvrir le fichier avec vim ? Y/N   " rep
+									if [ $rep == "y" ] || [ $rep == "Y" ]; then
+										vim $2.py
+										exit 1
+									else
+		 								exit 1
+									fi	
+								else
+									echo "import $name" >> $2.py			
+								fi 
+							done
+					done
 			fi
 		fi
 	fi
@@ -51,7 +60,7 @@ else
 	echo -e " Ce script permet la création automatique de script python ou bash avec des librairies intégrées "
 	echo -e " Pas besoin d'ajouter l'extension du fichier "
 	echo -e " Exemple : "
-	echo -e " $0 python <library> "
+	echo -e " $0 python <Script-Name> "
 	echo -e " $0 bash <Script-Name>"
 	echo -e " $0 perl <Script-Name>" 
 fi
